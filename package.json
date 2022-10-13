@@ -1,0 +1,17 @@
+{
+    "name": "@kwruntime/typedotnet",
+    "version": "0.1.0",
+    "main": "./main.js",
+    "description": "Run CSharp code, and access to any type/object in .NET 6 and .NET Framework/Mono",
+    "keywords": [
+        "mono",
+        ".net",
+        "dotnet",
+        "c#",
+        "csharp",
+        "Net.Framework",
+        "netframework",
+        "netcore",
+        "net6"
+    ]
+}

@@ -1,0 +1,29 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KodnetTs", "KodnetTs\KodnetTs.csproj", "{EFA47E12-42C0-4717-9B87-A757B6AD1AC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kodnet", "kodnet\kodnet.csproj", "{F1431A94-E3B3-4331-9645-D915126A0341}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "jxshellbase", "jxshellbase\jxshellbase.csproj", "{A1E48F72-4B7B-461A-B22D-52D21C522ECF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|anycpu = Debug|anycpu
+		Release|anycpu = Release|anycpu
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFA47E12-42C0-4717-9B87-A757B6AD1AC1}.Debug|anycpu.ActiveCfg = Debug|anycpu
+		{EFA47E12-42C0-4717-9B87-A757B6AD1AC1}.Debug|anycpu.Build.0 = Debug|anycpu
+		{EFA47E12-42C0-4717-9B87-A757B6AD1AC1}.Release|anycpu.ActiveCfg = Release|anycpu
+		{EFA47E12-42C0-4717-9B87-A757B6AD1AC1}.Release|anycpu.Build.0 = Release|anycpu
+		{F1431A94-E3B3-4331-9645-D915126A0341}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{F1431A94-E3B3-4331-9645-D915126A0341}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{F1431A94-E3B3-4331-9645-D915126A0341}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{F1431A94-E3B3-4331-9645-D915126A0341}.Release|anycpu.Build.0 = Release|Any CPU
+		{A1E48F72-4B7B-461A-B22D-52D21C522ECF}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{A1E48F72-4B7B-461A-B22D-52D21C522ECF}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{A1E48F72-4B7B-461A-B22D-52D21C522ECF}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{A1E48F72-4B7B-461A-B22D-52D21C522ECF}.Release|anycpu.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

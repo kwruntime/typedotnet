@@ -1,0 +1,9 @@
+tests
+dist
+*edge*
+npm
+.vscode
+*code-workspace
+**/bin/
+**/obj/
+**/.sync-data
