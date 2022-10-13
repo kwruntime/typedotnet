@@ -2,11 +2,18 @@
 
 Run CSharp code, and access to any type/object in .NET 6 and .NET Framework/Mono
 
+Supports (no tested on Mac but should work): 
+
+- .NET 6 or superior (called before .NET Core), on Windows/Linux/Mac
+- .NET Framework 4.5 or superior on Windows
+- Mono on Linux/Mac
+
 ## Why? 
 
 - For fun
-- Win32 configuration easy to do with .NET Framework, hard with Node.js
+- Win32 stuff, easy to do with .NET Framework (installed on all machines), hard with Node.js (maybe Registry for example)
 - Explore .NET 6 (.NET Core)
+- Any other solution 
 
 ## Features
 
@@ -20,9 +27,9 @@ Run CSharp code, and access to any type/object in .NET 6 and .NET Framework/Mono
 ## Differences with edge.js
 
 - Edge execute .NET/Mono/.NET Framework in same process, ```typedotnet``` create a separated process. 
-- Due to in-process execution, Edge can be faster in some cases. 
-- ```typedotnet``` supports multiple .NET Core and .NET Framework simultaneously. 
-- ```typedotnet``` can call (almost?) any existing function without compile C# code, Edge needs ```Methods``` with specific signature to call. This means, Edge needs pre-compilation or dynamic compilation, giving some overhead to initialization, with ```typedotnet``` this can be avoided. 
+- Due to in-process execution, Edge can be faster in some cases.
+- ```typedotnet``` allows start many instances of Inter-process comunication, for example running .NET 6 and .NET Framework simultaneously.
+- ```typedotnet``` can call (almost?) all existing function without compile C# code, Edge needs ```Methods``` with specific signature to call. This means, Edge needs pre-compilation or dynamic compilation, giving some overhead to initialization, with ```typedotnet``` this can be avoided. 
 - ```typedotnet``` doesn't require any native dependency, good for restricted environments or small operations. 
 
 
@@ -50,7 +57,7 @@ async function main(){
 ``` 
 
 
-The idea with  ```typedotnet``` is create a "````Batch```" execution, and finish after the operations you need do. 
+The idea with  ```typedotnet``` is create a "```Batch```" execution, and finish after the operations you need do. 
 
 ```typescript
 import {Dotnet} from '@kwruntime/typedotnet'

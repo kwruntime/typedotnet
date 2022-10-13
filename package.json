@@ -1,6 +1,6 @@
 {
     "name": "@kwruntime/typedotnet",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "main": "./main.js",
     "description": "Run CSharp code, and access to any type/object in .NET 6 and .NET Framework/Mono",
     "keywords": [
@@ -13,5 +13,10 @@
         "netframework",
         "netcore",
         "net6"
-    ]
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kwruntime/typedotnet"
+    },
+    "author": "James (developer@kodhe.com)"
 }
