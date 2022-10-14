@@ -144,6 +144,9 @@ namespace FoxShell.TypeScript{
             return ConvertJSON(kodnet.GetTypeFromString(type), o);
         }
 
+        public bool IsNull(object value){
+            return value == null;
+        }
 
         public void FreeVariables(IEnumerable<object> varnames){
             foreach(var name in varnames){
@@ -332,6 +335,10 @@ namespace FoxShell.TypeScript{
 
             if(cmd.method == ".get.var"){
                 return value;
+            }
+            if(cmd.method == "Dispose")
+            {
+                cmd.method = ".dispose";
             }
 
             object result = null;

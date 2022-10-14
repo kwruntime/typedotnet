@@ -359,6 +359,9 @@ export class KodnetTs_Utils{
     ConvertJSON(type: System.Type, json: string): System.Object{}
     ConvertJSON(typename: string, json: string): System.Object{}
 
+    // check if a Proxy object is null on .NET
+    IsNull(value: any): System.Boolean 
+
 }
 
 ```

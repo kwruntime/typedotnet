@@ -1,1 +1,25 @@
-../../typescript/tsconfig.json
+ 
+{
+	"compilerOptions": {
+		"resolveJsonModule": true,
+		"moduleResolution": "node",
+		"module": "es2020",
+		"target": "esnext",
+		"outDir": "out",
+		"lib": [
+			"es6",
+			"dom"
+		],
+		"esModuleInterop": true,
+		"sourceMap": true,
+		"paths": {
+			"*.ts": ["*"]
+		},
+		"plugins": [{ "enableForWorkspaceTypeScriptVersions": true, "name": "kawix-runtime-plugin" }]
+	},
+	"exclude": [
+		"node_modules",
+		".vscode-test"
+	]
+}
+

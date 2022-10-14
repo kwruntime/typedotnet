@@ -7,6 +7,7 @@ import { Batch, ClrObject } from "./batch.ts"
 import Os from 'os'
 import fs from 'fs'
 
+
 export interface RuntimeInfo{
     arch: string 
     os: string 
@@ -86,7 +87,7 @@ export class Dotnet{
         
             paths = [
                 Path.join(process.env.PROGRAMFILES, "dotnet", "shared", "Microsoft.NETCore.App"),
-                Path.join(process.env["PROGRAMFILES(X86)"], "dotnet", "shared", "Microsoft.NETCore.App")
+                Path.join(process.env["PROGRAMFILES(X86)"] || '', "dotnet", "shared", "Microsoft.NETCore.App")
             ]
 
             for(let path of paths){
@@ -238,7 +239,7 @@ export class Dotnet{
 
     }
 
-    async start(runtime: string |  ((value: RuntimeInfo, index: number, array: RuntimeInfo[]) => value is RuntimeInfo) = "netcore"){
+    async start(runtime: string |  ((value: RuntimeInfo, index?: number, array?: RuntimeInfo[]) => boolean) = "netcore"){
         let runtimeInfo : RuntimeInfo
         
         let runtimesAvailable = await Dotnet.availableRuntimes()

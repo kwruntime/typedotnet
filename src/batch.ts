@@ -120,8 +120,9 @@ export class Batch{
 
     }
 
+  
 
-    async finish(){
+    async finish(){        
         // free variables
         let taskid = "Task" + this.uid + (this.taskcount++)
         let cmd = {
@@ -136,7 +137,13 @@ export class Batch{
             var: "",
             asyncmode: this.asyncmode
         }
-        await this.#dotnet.send(cmd)
+        if(this.actions.length){
+            this.actions.push(cmd)
+            return await this.execute()
+        }else{
+            return await this.#dotnet.send(cmd)
+        }
+
     }
 
    
