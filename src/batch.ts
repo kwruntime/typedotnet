@@ -13,7 +13,6 @@ export class Batch{
     uid = Date.now().toString(28)
     count = 0
     taskcount= 0
-    //#kodnet: any
     #dotnet: any
     asyncmode = true
     dotnet: Dotnet
@@ -21,8 +20,11 @@ export class Batch{
     #clrKodnet = null 
     #clrUtils = null
 
-
+    /**
+     * varnames saved in .NET side
+     */
     varnames = new Set<string>()
+
     
     static(type: string){
         let types = new StaticType(this, type)
@@ -33,6 +35,10 @@ export class Batch{
         this.#dotnet = dotnet
     }
     
+    /**
+     * kodnet object from .NET 
+     * See this project: https://github.com/FoxShell/KodnetLib/tree/main/kodnet
+     */
     get kodnet(){
         if(!this.#clrKodnet){
             let kod = new InstanceObject(this, "$0")
@@ -41,7 +47,10 @@ export class Batch{
         return this.#clrKodnet
     }
     
-
+    /**
+     * utils object from .NET for some operations
+     * See this project: https://github.com/kwruntime/typedotnet/tree/main/src/CSharp/net4.5/KodnetTs
+     */
     get utils(){
         if(!this.#clrUtils){
             let kod = new InstanceObject(this, "$1")
@@ -50,7 +59,13 @@ export class Batch{
         return this.#clrUtils
     }
 
-    async wait(value: ClrObject){
+    /**
+     * Get a value from .NET in nodejs. This serialize the .NET object or value, to Javascript object/value
+     * 
+     * @param value any .NET object
+     * @returns a javascript object or value
+     */
+    async wait(value: any){
 
         var actions = this.actions
 
@@ -78,7 +93,11 @@ export class Batch{
 
     }
 
-
+    /**
+     * Compile C# source code, and get the class/instance Proxy
+     * @param options Configuration for compile
+     * @returns class/instance Proxy
+     */
     async compile(options: CompileOptions){
         let csharp = this.static("jxshell.csharplanguage").construct()
         csharp.RunScript(options.source)
@@ -97,16 +116,22 @@ export class Batch{
         return obj
     }
 
-
+    /**
+     * Converts a javascript object, to a specified System.Type name in .NET
+     * @param typename typename of .NET System.Type
+     * @param object a javascript object
+     * @returns a .NET object
+     */
     convertObject(typename: string, object: any){
         let str = JSON.stringify(object)
         return this.utils.ConvertJSON(typename, str)
     }
 
 
-
+    /**
+     * Execute all pending actions without wait for a value
+     */
     async execute(){
-
         var actions = this.actions
         if(actions.length){
             this.actions = []
@@ -121,7 +146,9 @@ export class Batch{
     }
 
   
-
+    /**
+     * Execute all pending actions without wait for a value, and free all current varnames used from .NET side
+     */
     async finish(){        
         // free variables
         let taskid = "Task" + this.uid + (this.taskcount++)
@@ -148,13 +175,7 @@ export class Batch{
 
    
 
-    /*
-    get kodnet(){
-        if(!this.#kodnet){
-            this.#kodnet = Batch.#newobject(this, "$0")
-        }
-        return this.#kodnet
-    }*/
+   
 
 
 
@@ -166,7 +187,7 @@ export class Batch{
     }
 
 
-    static createFunction(thisRef: ClrObject, prop: string){
+    private static createFunction(thisRef: ClrObject, prop: string){
         let batch = thisRef.batch
         let voidCall = prop.startsWith("$")
         let rprop = prop 
@@ -258,16 +279,13 @@ export class ClrObject{
 
 
     proxified(){
-
         return this 
-
         /*
         var f = function(){}
         f["self"] = this 
         //f["toJSON"] = this.toJSON.bind(this)
         return f 
         */
-
     }
 
     toJSON(){

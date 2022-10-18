@@ -3,10 +3,12 @@ import {Packager} from '/data/projects/Kodhe/kwruntime/std/package/compiler/pack
 import {Builder} from '/data/projects/Kodhe/kwruntime/std/package/compiler/build.ts'
 import fs from 'fs'
 import Path from 'path'
-
+import { Program as GenDts } from './gen-dts.ts'
 
 export class Program{
     static async main(){
+
+        await GenDts .main()
 
         let root = Path.join(__dirname, "src")
         let workingFolder = Path.join(__dirname, "dist")
@@ -33,19 +35,31 @@ export class Program{
             dereference: true
         })
 
+        await fs.promises.rm(Path.join(npmModuleFolder, "types"),{
+            recursive: true
+        })
+        await fs.promises.cp(Path.join(root,"types"), Path.join(npmModuleFolder, "types"), {
+            recursive: true
+        })
 
-        let filesToCopy = [
-            "src/package.json",
-            "src/.npmignore"  ,
-            "README.md"
-        ]
-        for(let file of filesToCopy){
-            let src = Path.join(__dirname, file)
+        let files = await fs.promises.readdir(Path.join(npmModuleFolder, "types"))
+        for(let file of files){
+            if(file.endsWith(".ts")){
+                await fs.promises.rename(Path.join(npmModuleFolder, "types", file), Path.join(npmModuleFolder, "types", file.substring(0,file.length-3) + ".d.ts"))
+            }
+        }
+
+
+        let filesToCopy = {
+            "src/package.json": "package.json",
+            "src/.npmignore":   ".npmignore",
+            "README.md": "README.md"
+        }
+        for(let [id, file] of Object.entries<string>(filesToCopy)){
+            let src = Path.join(__dirname, id)
             let dest = Path.join(npmModuleFolder, file)
             if(fs.existsSync(src)){
-                await fs.promises.cp(src, dest, {
-                    recursive: true 
-                })
+                await fs.promises.cp(src, dest)
             }
         }
 
@@ -65,10 +79,19 @@ export class Program{
         })
 
 
-        await packer.add([
-            Path.join(root,  "prod")
-        ])
+        
         await packer.addSourceFile(Path.join(root, "mod.ts"), "mod.js")
+        await packer.add([
+            Path.join(root, "prod")
+        ])
+        await packer.add([
+            Path.join(npmModuleFolder, "types")
+        ], npmModuleFolder)
+        
+        
+        
+
+        
         await packer.writeTo(Path.join(workingFolder, "com.kodhe.typedotnet.kwb"))
 
 

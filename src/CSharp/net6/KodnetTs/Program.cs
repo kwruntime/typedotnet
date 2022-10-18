@@ -35,7 +35,7 @@ namespace FoxShell.TypeScript{
             });
             js.ReferenceLoopHandling= ReferenceLoopHandling.Ignore;
             js.MaxDepth = 512;
-            js.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+            //js.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
         }
         public void StartReadCommandLine(){
 

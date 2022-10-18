@@ -20,44 +20,68 @@ export interface RuntimeInfo{
 
 export class Dotnet{
 
+    static #services = new Map<string, Dotnet>()    
+    id: string 
     #p: ChildProcess
     #liner: ReadLine
     #deferreds : {[key: string] : async.Deferred<any>} = {}    
-    #dotnetInfo: any
-    
-    #service = "netcore"
-    
+    //#service = "netcore"    
     lastException: any 
     divideParams = false 
     workingMode = "normal"
 
-    /*
-    get runtime(){
-        return this.#service
+    
+    constructor(id?: string){
+        this.id = id 
     }
 
-    set runtime(name: string){
-        if(name == "net6") name = "netcore"
-        if(name == "net6.0") name = "netcore"
-        if(name == "net4.5") name = "netframework"
-        if(name == "net.framework") name = "netframework"
-        if(["net6","net.framework"].indexOf(name) < 0){
-            throw Exception.create(`${name} not valid option`).putCode("INVALID_OPTION")
+    
+    /**
+     * Returns a Dotnet instance with specified id previously created, or create if not exists. Usefull for reuse instances
+     * @param id string 
+     * @returns a Dotnet instance object
+     */
+    static getWithId(id: string){
+        let dotnet = this.#services.get(id)
+        if(!dotnet){
+            dotnet = new Dotnet(id)
+            this.#services.set(id, dotnet)
         }
-        this.#service = name
+        return dotnet
     }
-    */
 
-
-
+    /**
+     * Returns available runtimes in machine
+     * This is an example response:
+     * [
+     *     {
+     *         arch: 'x64',
+     *         os: 'linux',
+     *         path: '/usr/share/dotnet/shared/Microsoft.NETCore.App/6.0.9',
+     *         executable: '/usr/bin/dotnet',
+     *         platform: 'netcore',
+     *         version: '6.0.9',
+     *         versionNumber: 6000009
+     *     },
+     *     {
+     *         arch: 'x64',
+     *         os: 'linux',
+     *         path: '/usr/lib/mono',
+     *         executable: '/usr/bin/mono',
+     *         platform: 'netframework',
+     *         version: '6.12.0.182',
+     *         versionNumber: 612000182
+     *     }
+     * ]
+     * 
+     * @returns array of RuntimeInfo
+     */
     static async availableRuntimes(): Promise<Array<RuntimeInfo>>{
         let exe = "dotnet"
         let available = new Array<any>()
 
 
-        if(Os.platform() == "win32"){
-
-            
+        if(Os.platform() == "win32"){            
             let paths = [
                 Path.join(process.env.WINDIR, "Microsoft.NET", "Framework", "v4.0.30319"),
                 Path.join(process.env.WINDIR, "Microsoft.NET", "Framework64", "v4.0.30319"),
@@ -120,8 +144,6 @@ export class Dotnet{
 
         }
         else{
-
-
             let upaths = process.env.PATH.split(Path.delimiter)
             let paths = [], pathsMono = []
             for(let path of upaths){
@@ -236,9 +258,21 @@ export class Dotnet{
             return (three != 0) ? three : ((two != 0) ? two : one)
         })
         return available
-
     }
 
+
+    get innerProcess(){
+        return this.#p
+    }
+
+    get started(){
+        return Boolean(this.innerProcess)
+    }
+
+    /**
+     * Start the rumtime
+     * @param runtime : can be string or a function to filter the runtime
+     */
     async start(runtime: string |  ((value: RuntimeInfo, index?: number, array?: RuntimeInfo[]) => boolean) = "netcore"){
         let runtimeInfo : RuntimeInfo
         
@@ -322,12 +356,18 @@ export class Dotnet{
             this.#p.stdout.removeListener("data", ondata)
     }   
 
-
+    /**
+     * finish the NETCore or NETFramework process
+     */
     close(){
         this.#p?.kill()
     }
 
-    batch(){
+    /**
+     * Create a new "scope" to interact 
+     * @returns Batch object
+     */
+    batch(): Batch{
         return new Batch(this)
     }
 
@@ -441,7 +481,7 @@ export class Dotnet{
         }
     }
 
-    send(cmd: any){
+    send(cmd: any): Promise<any>{
 
         let taskid = cmd.taskid
         let def: async.Deferred<any>

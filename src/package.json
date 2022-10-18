@@ -1,8 +1,8 @@
 {
     "name": "@kwruntime/typedotnet",
-    "version": "0.1.4",
+    "version": "0.1.8",
     "main": "./main.js",
-    "types": "./main.d.ts",
+    "types": "./types/mod.d.ts",
     "description": "Run CSharp code, and access to any type/object in .NET 6 and .NET Framework/Mono",
     "keywords": [
         "mono",

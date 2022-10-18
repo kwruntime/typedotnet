@@ -8,6 +8,18 @@ Supports (no tested on Mac but should work):
 - .NET Framework 4.5 or superior on Windows
 - Mono on Linux/Mac
 
+## Build module 
+
+This module was created using [@kwruntime/core](https://github.com/kwruntime/core).
+
+For build: 
+
+```bash 
+kwrun build.ts
+```
+
+This will generate an ```npm``` folder with generate ```js``` main file and ```.d.ts``` file declarations
+
 ## Why? 
 
 - For fun
@@ -22,7 +34,7 @@ Supports (no tested on Mac but should work):
 - Call any method, property directly like any function in javascript/typescript
 - Access to static members, including Structs, Enums, Generics, etc.
 - Compile C# code at run time
-- Supports past javascript objects as ```dynamic``` (ExpandoObject) to C#.
+- Supports pass javascript objects as ```dynamic``` (ExpandoObject) to C#.
 
 ## Differences with edge.js
 
@@ -247,121 +259,5 @@ await batch.finish()
 
 ## API Reference
 
-````typescript 
-export interface RuntimeInfo{
-    arch: string 
-    os: string 
-    platform: string 
-    path: string 
-    executable: string 
-    version: string 
-    versionNumber?: number
-}
-
-
-export interface CompileOptions{
-    source: string 
-    typename?: string 
-    static?: boolean
-}
-
-
-export class Dotnet {
-
-    // returns available runtimes
-    // for example: 
-    /*
-    [
-        {
-            arch: 'x64',
-            os: 'linux',
-            path: '/usr/share/dotnet/shared/Microsoft.NETCore.App/6.0.9',
-            executable: '/usr/bin/dotnet',
-            platform: 'netcore',
-            version: '6.0.9',
-            versionNumber: 6000009
-        },
-        {
-            arch: 'x64',
-            os: 'linux',
-            path: '/usr/lib/mono',
-            executable: '/usr/bin/mono',
-            platform: 'netframework',
-            version: '6.12.0.182',
-            versionNumber: 612000182
-        }
-    ]
-    */
-    static async availableRuntimes(): Promise<Array<RuntimeInfo>>{}
-
-
-    // start the rumtime 
-    // parameter can be string or a function to filter the runtime
-    async start(runtime: string |  ((value: RuntimeInfo, index: number, array: RuntimeInfo[]) => value is RuntimeInfo) = "netcore"){}
-
-
-    // finish the NETCore or NETFramework process
-    close(){}
-
-    // create a Batch object
-    batch(){}
-
-
-
-}
-
-
-export class Batch {
-
-    // Returns a Proxy (ClrObject) representing a .NET static type
-    // with object returned you can call any static method or constructor
-    static(typename: string): ClrObject{}
-
-
-    // Returns a Kodnet Proxy object. For see the Kodnet object, see the project: https://github.com/FoxShell/kodnetlib
-    get kodnet(): Kodnet{}
-
-
-    // Returns a KodnetTs_Utils object.  
-    get utils(): KodnetTs_Utils{}
-
-    // Compile a c# code, and returns an instance from typename specificed
-    async compile(options: CompileOptions): Promise<ClrObject>{}
-
-    // param typename: .NET type to get
-    // param object: Any javascript object to get converted
-    convertObject(typename: string, object: any): ClrObject{}
-
-
-    // Execute the current "pipeline", but no wait any value, returns nothing
-    async execute(): Promise<void> {}
-
-    // Execute the current "pipeline", and get the value from .NET variable/value
-    async wait(obj: ClrObject): Promise<any> {}
-
-
-    // Execute the current "pipeline" (if required), and free all the .NET objects used in this "Batch" execution
-    async finish(): Promise<any>{}
-
-}
-
-// basically a Proxy to .NET Object, used for some util operations
-export class KodnetTs_Utils{
-
-    // this methods executes from .NET side
-
-    // converts any object to a specified .NET Type
-    Cast(value: any, type: System.Type): System.Object{}
-    Cast(value: any, typename: string): System.Object{}
-
-
-    // converts a JSON string to a specificied .NET Type
-    ConvertJSON(type: System.Type, json: string): System.Object{}
-    ConvertJSON(typename: string, json: string): System.Object{}
-
-    // check if a Proxy object is null on .NET
-    IsNull(value: any): System.Boolean 
-
-}
-
-```
+- [Dotnet class](./src//types/dotnet.ts)
+- [Batch class](./src//types/batch.ts)
